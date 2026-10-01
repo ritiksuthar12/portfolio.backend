@@ -1,0 +1,88 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1515 >>
+stream
+BT
+/F1 22 Tf
+50 750 Td
+(Ritik Suthar) Tj
+/F1 12 Tf
+0 -25 Td
+(Full Stack Developer | MERN Specialist) Tj
+0 -18 Td
+(Email: ritiksuthar989@gmail.com | Portfolio: portfolio-ritik-live.vercel.app) Tj
+0 -15 Td
+(GitHub: github.com/ritiksuthar | LinkedIn: linkedin.com/in/ritiksuthar) Tj
+0 -35 Td
+/F1 15 Tf
+(PROFESSIONAL SUMMARY) Tj
+/F1 10 Tf
+0 -18 Td
+(Dedicated Full Stack Developer specializing in React.js, Node.js, Express.js, and MongoDB.) Tj
+0 -14 Td
+(Proven track record of building performant, modern web apps with intuitive UI/UX.) Tj
+0 -30 Td
+/F1 15 Tf
+(CORE TECHNICAL SKILLS) Tj
+/F1 10 Tf
+0 -18 Td
+(Frontend: React.js, JavaScript \(ES6+\), HTML5, CSS3, Tailwind CSS, Responsive Design) Tj
+0 -14 Td
+(Backend: Node.js, Express.js, RESTful APIs, JWT Authentication, Multer) Tj
+0 -14 Td
+(Databases & Tools: MongoDB, Mongoose, Git, GitHub, Postman, Vercel, Render) Tj
+0 -30 Td
+/F1 15 Tf
+(FEATURED PROJECTS) Tj
+/F1 11 Tf
+0 -18 Td
+(1. Dynamic Portfolio & Admin CMS) Tj
+/F1 10 Tf
+0 -14 Td
+(- Built with React 19, Express, Node.js, MongoDB with full live CRUD dashboard.) Tj
+/F1 11 Tf
+0 -18 Td
+(2. Weather Forecasting Web Application) Tj
+/F1 10 Tf
+0 -14 Td
+(- Real-time weather dashboard utilizing OpenWeather API with geolocation.) Tj
+/F1 11 Tf
+0 -18 Td
+(3. High-Performance Notes REST API) Tj
+/F1 10 Tf
+0 -14 Td
+(- Secure backend service with JWT authentication, BCrypt, and MongoDB storage.) Tj
+0 -30 Td
+/F1 15 Tf
+(EDUCATION) Tj
+/F1 10 Tf
+0 -18 Td
+(Bachelor of Computer Applications \(BCA\) - Currently Pursuing) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000234 00000 n 
+0000000000 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+500
+%%EOF

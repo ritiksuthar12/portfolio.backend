@@ -6,7 +6,11 @@
       "description": "Real-time weather app using OpenWeather API.",
       "deployedUrl": "https://ritik-weather-live.vercel.app",
       "githubUrl": "https://github.com/ritiksuthar/weather-app",
-      "tags": ["HTML", "CSS", "JavaScript"],
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
       "category": "Frontend",
       "featured": true,
       "order": 1,
@@ -18,7 +22,11 @@
       "description": "REST API for managing notes with authentication.",
       "deployedUrl": "https://notes-api-ritik.onrender.com",
       "githubUrl": "https://github.com/ritiksuthar/notes-api",
-      "tags": ["Node.js", "Express", "MongoDB"],
+      "tags": [
+        "Node.js",
+        "Express",
+        "MongoDB"
+      ],
       "category": "Backend",
       "featured": true,
       "order": 2,
@@ -30,7 +38,11 @@
       "description": "Personal portfolio with admin panel to manage projects.",
       "deployedUrl": "https://portfolio-ritik-live.vercel.app",
       "githubUrl": "https://github.com/ritiksuthar/portfolio-generator",
-      "tags": ["React", "Tailwind CSS", "MongoDB"],
+      "tags": [
+        "React",
+        "Tailwind CSS",
+        "MongoDB"
+      ],
       "category": "Full Stack",
       "featured": true,
       "order": 3,
@@ -42,7 +54,12 @@
       "description": "Full-featured shopping web app with JWT auth, cart management, and order history.",
       "deployedUrl": "https://ritik-store-demo.vercel.app",
       "githubUrl": "https://github.com/ritiksuthar/mern-ecommerce",
-      "tags": ["React", "Node.js", "Express", "MongoDB"],
+      "tags": [
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB"
+      ],
       "category": "Full Stack",
       "featured": true,
       "order": 4,
@@ -54,7 +71,11 @@
       "description": "Interactive visualization tool for sorting, binary trees, and graph traversal algorithms.",
       "deployedUrl": "https://algo-visualizer-ritik.vercel.app",
       "githubUrl": "https://github.com/ritiksuthar/algo-visualizer",
-      "tags": ["JavaScript", "HTML5", "CSS3"],
+      "tags": [
+        "JavaScript",
+        "HTML5",
+        "CSS3"
+      ],
       "category": "Frontend",
       "featured": false,
       "order": 5,
@@ -194,5 +215,19 @@
       "username": "ritik25",
       "password": "$2a$10$TuJuyGGv23EFKlSpXHXZYuEPSfD1YJHgnEjaeij7a3CPRUl/sG3VS"
     }
-  ]
+  ],
+  "resume": {
+    "fileName": "Ritik_Suthar_Resume.pdf",
+    "fileUrl": "/uploads/resume/Ritik_Suthar_Resume.pdf",
+    "filePath": "uploads\\resume\\Ritik_Suthar_Resume.pdf",
+    "fileSize": 2061,
+    "mimeType": "application/pdf",
+    "customUrl": "",
+    "imageKitUrl": "",
+    "imageKitFileId": "",
+    "storageType": "mongodb_buffer",
+    "uploadedAt": "2026-10-01T16:24:42.916Z",
+    "id": "6abe894bc8ed83b59823eaf6",
+    "fileBase64": "JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCAxNTE1ID4+CnN0cmVhbQpCVAovRjEgMjIgVGYKNTAgNzUwIFRkCihSaXRpayBTdXRoYXIpIFRqCi9GMSAxMiBUZgowIC0yNSBUZAooRnVsbCBTdGFjayBEZXZlbG9wZXIgfCBNRVJOIFNwZWNpYWxpc3QpIFRqCjAgLTE4IFRkCihFbWFpbDogcml0aWtzdXRoYXI5ODlAZ21haWwuY29tIHwgUG9ydGZvbGlvOiBwb3J0Zm9saW8tcml0aWstbGl2ZS52ZXJjZWwuYXBwKSBUagowIC0xNSBUZAooR2l0SHViOiBnaXRodWIuY29tL3JpdGlrc3V0aGFyIHwgTGlua2VkSW46IGxpbmtlZGluLmNvbS9pbi9yaXRpa3N1dGhhcikgVGoKMCAtMzUgVGQKL0YxIDE1IFRmCihQUk9GRVNTSU9OQUwgU1VNTUFSWSkgVGoKL0YxIDEwIFRmCjAgLTE4IFRkCihEZWRpY2F0ZWQgRnVsbCBTdGFjayBEZXZlbG9wZXIgc3BlY2lhbGl6aW5nIGluIFJlYWN0LmpzLCBOb2RlLmpzLCBFeHByZXNzLmpzLCBhbmQgTW9uZ29EQi4pIFRqCjAgLTE0IFRkCihQcm92ZW4gdHJhY2sgcmVjb3JkIG9mIGJ1aWxkaW5nIHBlcmZvcm1hbnQsIG1vZGVybiB3ZWIgYXBwcyB3aXRoIGludHVpdGl2ZSBVSS9VWC4pIFRqCjAgLTMwIFRkCi9GMSAxNSBUZgooQ09SRSBURUNITklDQUwgU0tJTExTKSBUagovRjEgMTAgVGYKMCAtMTggVGQKKEZyb250ZW5kOiBSZWFjdC5qcywgSmF2YVNjcmlwdCBcKEVTNitcKSwgSFRNTDUsIENTUzMsIFRhaWx3aW5kIENTUywgUmVzcG9uc2l2ZSBEZXNpZ24pIFRqCjAgLTE0IFRkCihCYWNrZW5kOiBOb2RlLmpzLCBFeHByZXNzLmpzLCBSRVNUZnVsIEFQSXMsIEpXVCBBdXRoZW50aWNhdGlvbiwgTXVsdGVyKSBUagowIC0xNCBUZAooRGF0YWJhc2VzICYgVG9vbHM6IE1vbmdvREIsIE1vbmdvb3NlLCBHaXQsIEdpdEh1YiwgUG9zdG1hbiwgVmVyY2VsLCBSZW5kZXIpIFRqCjAgLTMwIFRkCi9GMSAxNSBUZgooRkVBVFVSRUQgUFJPSkVDVFMpIFRqCi9GMSAxMSBUZgowIC0xOCBUZAooMS4gRHluYW1pYyBQb3J0Zm9saW8gJiBBZG1pbiBDTVMpIFRqCi9GMSAxMCBUZgowIC0xNCBUZAooLSBCdWlsdCB3aXRoIFJlYWN0IDE5LCBFeHByZXNzLCBOb2RlLmpzLCBNb25nb0RCIHdpdGggZnVsbCBsaXZlIENSVUQgZGFzaGJvYXJkLikgVGoKL0YxIDExIFRmCjAgLTE4IFRkCigyLiBXZWF0aGVyIEZvcmVjYXN0aW5nIFdlYiBBcHBsaWNhdGlvbikgVGoKL0YxIDEwIFRmCjAgLTE0IFRkCigtIFJlYWwtdGltZSB3ZWF0aGVyIGRhc2hib2FyZCB1dGlsaXppbmcgT3BlbldlYXRoZXIgQVBJIHdpdGggZ2VvbG9jYXRpb24uKSBUagovRjEgMTEgVGYKMCAtMTggVGQKKDMuIEhpZ2gtUGVyZm9ybWFuY2UgTm90ZXMgUkVTVCBBUEkpIFRqCi9GMSAxMCBUZgowIC0xNCBUZAooLSBTZWN1cmUgYmFja2VuZCBzZXJ2aWNlIHdpdGggSldUIGF1dGhlbnRpY2F0aW9uLCBCQ3J5cHQsIGFuZCBNb25nb0RCIHN0b3JhZ2UuKSBUagowIC0zMCBUZAovRjEgMTUgVGYKKEVEVUNBVElPTikgVGoKL0YxIDEwIFRmCjAgLTE4IFRkCihCYWNoZWxvciBvZiBDb21wdXRlciBBcHBsaWNhdGlvbnMgXChCQ0FcKSAtIEN1cnJlbnRseSBQdXJzdWluZykgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDExNSAwMDAwMCBuIAowMDAwMDAwMjM0IDAwMDAwIG4gCjAwMDAwMDAwMDAgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA2IC9Sb290IDEgMCBSID4+CnN0YXJ0eHJlZgo1MDAKJSVFT0YK"
+  }
 }

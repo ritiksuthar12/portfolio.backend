@@ -5,6 +5,7 @@ const Project = require('../models/Project');
 const Skill = require('../models/Skill');
 const Message = require('../models/Message');
 const Admin = require('../models/Admin');
+const Resume = require('../models/Resume');
 const { initialProjects, initialSkills } = require('../data/initialData');
 
 const storeFilePath = path.join(__dirname, '..', 'data', 'portfolio_store.json');
@@ -16,7 +17,8 @@ class DBStore {
       projects: [],
       skills: [],
       messages: [],
-      admins: []
+      admins: [],
+      resume: null
     };
     this.initLocalStore();
   }
@@ -551,6 +553,140 @@ class DBStore {
       this.localData.admins[idx].password = newHashedPassword;
       this.saveLocalStore();
     }
+  }
+
+  // Resume Management
+  async getResume() {
+    if (this.isMongoConnected) {
+      try {
+        const resumeDoc = await Resume.findOne().sort({ updatedAt: -1 });
+        if (resumeDoc) {
+          return {
+            id: resumeDoc._id.toString(),
+            fileName: resumeDoc.fileName,
+            fileUrl: resumeDoc.imageKitUrl || resumeDoc.fileUrl,
+            filePath: resumeDoc.filePath,
+            fileSize: resumeDoc.fileSize,
+            mimeType: resumeDoc.mimeType,
+            customUrl: resumeDoc.customUrl,
+            imageKitUrl: resumeDoc.imageKitUrl,
+            storageType: resumeDoc.storageType || (resumeDoc.imageKitUrl ? 'imagekit' : (resumeDoc.fileData ? 'mongodb_buffer' : 'local')),
+            uploadedAt: resumeDoc.uploadedAt,
+            hasResume: true,
+            hasBuffer: !!(resumeDoc.fileData && resumeDoc.fileData.length > 0)
+          };
+        }
+      } catch (err) {
+        console.warn('Mongo getResume failed:', err.message);
+      }
+    }
+
+    if (this.localData.resume) {
+      return {
+        ...this.localData.resume,
+        fileUrl: this.localData.resume.imageKitUrl || this.localData.resume.fileUrl,
+        hasResume: true
+      };
+    }
+
+    return null;
+  }
+
+  async getResumeFile() {
+    if (this.isMongoConnected) {
+      try {
+        const resumeDoc = await Resume.findOne().sort({ updatedAt: -1 });
+        if (resumeDoc) {
+          return {
+            buffer: resumeDoc.fileData && resumeDoc.fileData.length > 0 ? resumeDoc.fileData : null,
+            filePath: resumeDoc.filePath,
+            mimeType: resumeDoc.mimeType || 'application/pdf',
+            fileName: resumeDoc.fileName || 'Ritik_Suthar_Resume.pdf',
+            imageKitUrl: resumeDoc.imageKitUrl || '',
+            customUrl: resumeDoc.customUrl || ''
+          };
+        }
+      } catch (err) {
+        console.warn('Mongo getResumeFile error:', err.message);
+      }
+    }
+
+    if (this.localData.resume) {
+      return {
+        buffer: this.localData.resume.fileBase64 ? Buffer.from(this.localData.resume.fileBase64, 'base64') : null,
+        filePath: this.localData.resume.filePath,
+        mimeType: this.localData.resume.mimeType || 'application/pdf',
+        fileName: this.localData.resume.fileName || 'Ritik_Suthar_Resume.pdf',
+        imageKitUrl: this.localData.resume.imageKitUrl || '',
+        customUrl: this.localData.resume.customUrl || ''
+      };
+    }
+
+    return null;
+  }
+
+  async saveResume(resumeData) {
+    const payload = {
+      fileName: resumeData.fileName || 'Ritik_Suthar_Resume.pdf',
+      fileUrl: resumeData.fileUrl || '',
+      filePath: resumeData.filePath || '',
+      fileSize: resumeData.fileSize || 0,
+      mimeType: resumeData.mimeType || 'application/pdf',
+      customUrl: resumeData.customUrl || '',
+      fileData: resumeData.fileData || null,
+      imageKitUrl: resumeData.imageKitUrl || '',
+      imageKitFileId: resumeData.imageKitFileId || '',
+      storageType: resumeData.storageType || 'mongodb_buffer',
+      uploadedAt: new Date().toISOString()
+    };
+
+    if (this.isMongoConnected) {
+      try {
+        await Resume.deleteMany({});
+        const created = await Resume.create(payload);
+        payload.id = created._id.toString();
+      } catch (err) {
+        console.warn('Mongo saveResume error:', err.message);
+      }
+    }
+
+    // Save lightweight copy without binary buffer into JSON store
+    const localCopy = { ...payload };
+    if (payload.fileData) {
+      // Store small base64 copy for offline store if size <= 5MB
+      if (payload.fileSize <= 5 * 1024 * 1024) {
+        localCopy.fileBase64 = payload.fileData.toString('base64');
+      }
+      delete localCopy.fileData;
+    }
+
+    this.localData.resume = localCopy;
+    this.saveLocalStore();
+    return {
+      fileName: payload.fileName,
+      fileUrl: payload.imageKitUrl || payload.fileUrl,
+      fileSize: payload.fileSize,
+      mimeType: payload.mimeType,
+      customUrl: payload.customUrl,
+      imageKitUrl: payload.imageKitUrl,
+      storageType: payload.storageType,
+      uploadedAt: payload.uploadedAt,
+      hasResume: true
+    };
+  }
+
+  async deleteResume() {
+    if (this.isMongoConnected) {
+      try {
+        await Resume.deleteMany({});
+      } catch (err) {
+        console.warn('Mongo deleteResume error:', err.message);
+      }
+    }
+
+    this.localData.resume = null;
+    this.saveLocalStore();
+    return true;
   }
 }
 

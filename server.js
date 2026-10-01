@@ -17,6 +17,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Static uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Connect to MongoDB
 connectDB();
 
@@ -25,6 +28,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/skills', require('./routes/skillRoutes'));
 app.use('/api/contact', require('./routes/messageRoutes'));
+app.use('/api/resume', require('./routes/resumeRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -44,6 +48,16 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Portfolio backend server running on http://localhost:${PORT}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n❌ Error: Port ${PORT} is already in use by another process.`);
+    console.error(`💡 Free port ${PORT} or kill the existing process and restart.\n`);
+    process.exit(1);
+  } else {
+    console.error('Server error:', err);
+  }
 });
