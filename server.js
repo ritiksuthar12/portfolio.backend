@@ -48,16 +48,22 @@ app.use((err, req, res, next) => {
   });
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Portfolio backend server running on http://localhost:${PORT}`);
-});
+// Export app for Vercel serverless deployment
+module.exports = app;
 
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ Error: Port ${PORT} is already in use by another process.`);
-    console.error(`💡 Free port ${PORT} or kill the existing process and restart.\n`);
-    process.exit(1);
-  } else {
-    console.error('Server error:', err);
-  }
-});
+// Only listen on port when running standalone locally or on traditional servers (Render, VPS)
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Portfolio backend server running on http://localhost:${PORT}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n❌ Error: Port ${PORT} is already in use by another process.`);
+      console.error(`💡 Free port ${PORT} or kill the existing process and restart.\n`);
+      process.exit(1);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+}
