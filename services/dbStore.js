@@ -74,35 +74,8 @@ class DBStore {
 
   async syncLocalToMongo() {
     try {
-      const projectCount = await Project.countDocuments();
-      if (projectCount === 0 && this.localData.projects.length > 0) {
-        console.log('Seeding MongoDB with initial projects...');
-        const mongoProjects = this.localData.projects.map(p => ({
-          title: p.title,
-          description: p.description,
-          deployedUrl: p.deployedUrl,
-          githubUrl: p.githubUrl || '',
-          tags: p.tags || [],
-          category: p.category || 'Full Stack',
-          featured: p.featured !== false,
-          order: p.order || 0
-        }));
-        await Project.insertMany(mongoProjects);
-      }
-
-      const skillCount = await Skill.countDocuments();
-      if (skillCount === 0 && this.localData.skills.length > 0) {
-        console.log('Seeding MongoDB with initial skills...');
-        const mongoSkills = this.localData.skills.map(s => ({
-          name: s.name,
-          category: s.category || 'Frontend',
-          icon: s.icon || 'code',
-          proficiency: s.proficiency || 85,
-          featured: s.featured !== false,
-          order: s.order || 0
-        }));
-        await Skill.insertMany(mongoSkills);
-      }
+      const seededFile = path.join(__dirname, '..', 'data', '.db_initialized');
+      const isAlreadyInitialized = fs.existsSync(seededFile);
 
       const adminCount = await Admin.countDocuments();
       if (adminCount === 0) {
@@ -110,6 +83,47 @@ class DBStore {
         const hashedPassword = bcrypt.hashSync(process.env.ADMIN_PASSWORD || 'admin123', 10);
         await Admin.create({ username, password: hashedPassword });
         console.log(`Default admin created in MongoDB: ${username}`);
+      }
+
+      // ONLY seed initial demo data if the database has NEVER been initialized before
+      if (!isAlreadyInitialized && adminCount === 0) {
+        const projectCount = await Project.countDocuments();
+        if (projectCount === 0 && this.localData.projects.length > 0) {
+          console.log('Seeding MongoDB with initial projects...');
+          const mongoProjects = this.localData.projects.map(p => ({
+            title: p.title,
+            description: p.description,
+            deployedUrl: p.deployedUrl,
+            githubUrl: p.githubUrl || '',
+            tags: p.tags || [],
+            category: p.category || 'Full Stack',
+            featured: p.featured !== false,
+            order: p.order || 0
+          }));
+          await Project.insertMany(mongoProjects);
+        }
+
+        const skillCount = await Skill.countDocuments();
+        if (skillCount === 0 && this.localData.skills.length > 0) {
+          console.log('Seeding MongoDB with initial skills...');
+          const mongoSkills = this.localData.skills.map(s => ({
+            name: s.name,
+            category: s.category || 'Frontend',
+            icon: s.icon || 'code',
+            proficiency: s.proficiency || 85,
+            featured: s.featured !== false,
+            order: s.order || 0
+          }));
+          await Skill.insertMany(mongoSkills);
+        }
+
+        try {
+          fs.writeFileSync(seededFile, new Date().toISOString(), 'utf8');
+        } catch (e) {}
+      } else if (!isAlreadyInitialized) {
+        try {
+          fs.writeFileSync(seededFile, new Date().toISOString(), 'utf8');
+        } catch (e) {}
       }
     } catch (err) {
       console.error('Error syncing to MongoDB:', err.message);
@@ -281,18 +295,37 @@ class DBStore {
 
   async deleteProject(id) {
     let deleted = false;
+    let deletedDoc = null;
+    const mongoose = require('mongoose');
+
     if (this.isMongoConnected) {
       try {
-        await Project.findByIdAndDelete(id);
-        deleted = true;
+        if (mongoose.Types.ObjectId.isValid(id)) {
+          deletedDoc = await Project.findByIdAndDelete(id);
+        }
+        if (!deletedDoc) {
+          deletedDoc = await Project.findOneAndDelete({
+            $or: [
+              ...(mongoose.Types.ObjectId.isValid(id) ? [{ _id: id }] : []),
+              { id: id },
+              { title: id }
+            ]
+          });
+        }
+        if (deletedDoc) {
+          deleted = true;
+        }
       } catch (err) {
         console.warn('Mongo delete failed:', err.message);
       }
     }
 
     const prevLen = this.localData.projects.length;
-    this.localData.projects = this.localData.projects.filter(p => p.id !== id && p._id !== id);
-    if (this.localData.projects.length !== prevLen) {
+    const matchTitle = deletedDoc ? deletedDoc.title : id;
+    this.localData.projects = this.localData.projects.filter(p => 
+      p.id !== id && p._id !== id && p.title !== id && p.title !== matchTitle
+    );
+    if (this.localData.projects.length !== prevLen || deleted) {
       deleted = true;
       this.saveLocalStore();
     }
@@ -414,18 +447,37 @@ class DBStore {
 
   async deleteSkill(id) {
     let deleted = false;
+    let deletedDoc = null;
+    const mongoose = require('mongoose');
+
     if (this.isMongoConnected) {
       try {
-        await Skill.findByIdAndDelete(id);
-        deleted = true;
+        if (mongoose.Types.ObjectId.isValid(id)) {
+          deletedDoc = await Skill.findByIdAndDelete(id);
+        }
+        if (!deletedDoc) {
+          deletedDoc = await Skill.findOneAndDelete({
+            $or: [
+              ...(mongoose.Types.ObjectId.isValid(id) ? [{ _id: id }] : []),
+              { id: id },
+              { name: id }
+            ]
+          });
+        }
+        if (deletedDoc) {
+          deleted = true;
+        }
       } catch (err) {
         console.warn('Mongo delete skill failed:', err.message);
       }
     }
 
     const prevLen = this.localData.skills.length;
-    this.localData.skills = this.localData.skills.filter(s => s.id !== id && s._id !== id);
-    if (this.localData.skills.length !== prevLen) {
+    const matchName = deletedDoc ? deletedDoc.name : id;
+    this.localData.skills = this.localData.skills.filter(s => 
+      s.id !== id && s._id !== id && s.name !== id && s.name !== matchName
+    );
+    if (this.localData.skills.length !== prevLen || deleted) {
       deleted = true;
       this.saveLocalStore();
     }

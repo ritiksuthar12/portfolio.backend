@@ -17,38 +17,6 @@
       "createdAt": "2026-09-28T16:00:00.000Z"
     },
     {
-      "id": "proj-2",
-      "title": "Notes API",
-      "description": "REST API for managing notes with authentication.",
-      "deployedUrl": "https://notes-api-ritik.onrender.com",
-      "githubUrl": "https://github.com/ritiksuthar/notes-api",
-      "tags": [
-        "Node.js",
-        "Express",
-        "MongoDB"
-      ],
-      "category": "Backend",
-      "featured": true,
-      "order": 2,
-      "createdAt": "2026-09-28T16:00:00.000Z"
-    },
-    {
-      "id": "proj-3",
-      "title": "Portfolio Generator",
-      "description": "Personal portfolio with admin panel to manage projects.",
-      "deployedUrl": "https://portfolio-ritik-live.vercel.app",
-      "githubUrl": "https://github.com/ritiksuthar/portfolio-generator",
-      "tags": [
-        "React",
-        "Tailwind CSS",
-        "MongoDB"
-      ],
-      "category": "Full Stack",
-      "featured": true,
-      "order": 3,
-      "createdAt": "2026-09-28T16:00:00.000Z"
-    },
-    {
       "id": "proj-4",
       "title": "E-Commerce Platform",
       "description": "Full-featured shopping web app with JWT auth, cart management, and order history.",
