@@ -20,20 +20,46 @@ app.use(express.json());
 // Static uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Connect to MongoDB
+// Database connection middleware to ensure connection is ready before handling requests (crucial for Vercel Serverless)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+  } catch (err) {
+    console.warn('MongoDB connection attempt in request:', err.message);
+  }
+  next();
+});
+
+// Initial startup connection
 connectDB();
 
 // API Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/projects', require('./routes/projectRoutes'));
-app.use('/api/skills', require('./routes/skillRoutes'));
-app.use('/api/contact', require('./routes/messageRoutes'));
-app.use('/api/resume', require('./routes/resumeRoutes'));
+const authRoutes = require('./routes/authRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+const skillRoutes = require('./routes/skillRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const resumeRoutes = require('./routes/resumeRoutes');
 
-// Health check
-app.get('/api/health', (req, res) => {
+// Standard /api routes
+app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/contact', messageRoutes);
+app.use('/api/resume', resumeRoutes);
+
+// Rewritten routes without /api prefix (supports Vercel rewrites seamlessly)
+app.use('/auth', authRoutes);
+app.use('/projects', projectRoutes);
+app.use('/skills', skillRoutes);
+app.use('/contact', messageRoutes);
+app.use('/resume', resumeRoutes);
+
+// Health check endpoint
+app.get(['/api/health', '/health'], (req, res) => {
+  const mongoose = require('mongoose');
   res.json({
     status: 'online',
+    database: mongoose.connection.readyState === 1 ? 'connected (mongodb)' : 'local_fallback',
     timestamp: new Date().toISOString(),
     service: 'Ritik Suthar Portfolio API'
   });
@@ -51,8 +77,8 @@ app.use((err, req, res, next) => {
 // Export app for Vercel serverless deployment
 module.exports = app;
 
-// Only listen on port when running standalone locally or on traditional servers (Render, VPS)
-if (!process.env.VERCEL) {
+// Only listen on port when running standalone directly (not when imported as a serverless function)
+if (require.main === module && !process.env.VERCEL) {
   const server = app.listen(PORT, () => {
     console.log(`🚀 Portfolio backend server running on http://localhost:${PORT}`);
   });

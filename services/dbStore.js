@@ -23,6 +23,11 @@ class DBStore {
     this.initLocalStore();
   }
 
+  get isMongoReady() {
+    const mongoose = require('mongoose');
+    return this.isMongoConnected || (mongoose.connection && mongoose.connection.readyState === 1);
+  }
+
   setMongoConnected(status) {
     this.isMongoConnected = status;
     if (status) {
@@ -66,9 +71,12 @@ class DBStore {
 
   saveLocalStore() {
     try {
+      if (process.env.VERCEL) {
+        return;
+      }
       fs.writeFileSync(storeFilePath, JSON.stringify(this.localData, null, 2), 'utf8');
     } catch (err) {
-      console.error('Error saving local store:', err.message);
+      console.warn('Local store write skipped (serverless or read-only):', err.message);
     }
   }
 
@@ -132,7 +140,7 @@ class DBStore {
 
   // Projects CRUD
   async getProjects() {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const projects = await Project.find().sort({ order: 1, createdAt: -1 });
         return projects.map(p => ({
@@ -156,7 +164,7 @@ class DBStore {
   }
 
   async getProjectById(id) {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const p = await Project.findById(id);
         if (p) {
@@ -183,7 +191,7 @@ class DBStore {
 
   async createProject(data) {
     let newProject;
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const doc = await Project.create({
           title: data.title,
@@ -240,7 +248,7 @@ class DBStore {
 
   async updateProject(id, data) {
     let updated;
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const doc = await Project.findByIdAndUpdate(
           id,
@@ -298,7 +306,7 @@ class DBStore {
     let deletedDoc = null;
     const mongoose = require('mongoose');
 
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         if (mongoose.Types.ObjectId.isValid(id)) {
           deletedDoc = await Project.findByIdAndDelete(id);
@@ -334,7 +342,7 @@ class DBStore {
 
   // Skills CRUD
   async getSkills() {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const skills = await Skill.find().sort({ order: 1, name: 1 });
         return skills.map(s => ({
@@ -356,7 +364,7 @@ class DBStore {
 
   async createSkill(data) {
     let newSkill;
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const doc = await Skill.create({
           name: data.name,
@@ -404,7 +412,7 @@ class DBStore {
 
   async updateSkill(id, data) {
     let updated;
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const doc = await Skill.findByIdAndUpdate(
           id,
@@ -450,7 +458,7 @@ class DBStore {
     let deletedDoc = null;
     const mongoose = require('mongoose');
 
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         if (mongoose.Types.ObjectId.isValid(id)) {
           deletedDoc = await Skill.findByIdAndDelete(id);
@@ -486,7 +494,7 @@ class DBStore {
 
   // Messages
   async getMessages() {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const msgs = await Message.find().sort({ createdAt: -1 });
         return msgs.map(m => ({
@@ -508,7 +516,7 @@ class DBStore {
 
   async createMessage(data) {
     let newMsg;
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const doc = await Message.create({
           name: data.name,
@@ -554,7 +562,7 @@ class DBStore {
   }
 
   async deleteMessage(id) {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         await Message.findByIdAndDelete(id);
       } catch (err) {}
@@ -570,7 +578,7 @@ class DBStore {
     const withoutAt = raw.startsWith('@') ? raw.slice(1) : raw;
     const withAt = '@' + withoutAt;
 
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const adminDoc = await Admin.findOne({
           username: { $in: [raw, withAt, withoutAt] }
@@ -595,7 +603,7 @@ class DBStore {
 
   async updateAdminPassword(username, newHashedPassword) {
     const normUser = (username || '').toLowerCase().trim();
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         await Admin.findOneAndUpdate({ username: normUser }, { password: newHashedPassword });
       } catch (err) {}
@@ -609,7 +617,7 @@ class DBStore {
 
   // Resume Management
   async getResume() {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const resumeDoc = await Resume.findOne().sort({ updatedAt: -1 });
         if (resumeDoc) {
@@ -645,7 +653,7 @@ class DBStore {
   }
 
   async getResumeFile() {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         const resumeDoc = await Resume.findOne().sort({ updatedAt: -1 });
         if (resumeDoc) {
@@ -692,7 +700,7 @@ class DBStore {
       uploadedAt: new Date().toISOString()
     };
 
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         await Resume.deleteMany({});
         const created = await Resume.create(payload);
@@ -728,7 +736,7 @@ class DBStore {
   }
 
   async deleteResume() {
-    if (this.isMongoConnected) {
+    if (this.isMongoReady) {
       try {
         await Resume.deleteMany({});
       } catch (err) {
