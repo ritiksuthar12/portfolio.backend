@@ -55,6 +55,19 @@ app.use('/skills', skillRoutes);
 app.use('/contact', messageRoutes);
 app.use('/resume', resumeRoutes);
 
+// Friendly root endpoint (prevents "Cannot GET /" or "Cannot GET /api")
+app.get(['/', '/api'], (req, res) => {
+  const mongoose = require('mongoose');
+  res.json({
+    status: 'online',
+    message: 'Ritik Suthar Portfolio Backend API is running',
+    database: mongoose.connection.readyState === 1 ? 'connected (mongodb)' : 'local_fallback',
+    health: '/api/health',
+    timestamp: new Date().toISOString(),
+    service: 'Ritik Suthar Portfolio API'
+  });
+});
+
 // Health check endpoint
 app.get(['/api/health', '/health'], (req, res) => {
   const mongoose = require('mongoose');
